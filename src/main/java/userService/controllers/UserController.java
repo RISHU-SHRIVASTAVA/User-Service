@@ -54,7 +54,6 @@ public class UserController {
     @GetMapping("/validate/{token}")
     public UserDTO validateToken(@PathVariable String token){
         User user = userService.validateToken(token);
-
         return UserDTO.from(user);
     }
 
