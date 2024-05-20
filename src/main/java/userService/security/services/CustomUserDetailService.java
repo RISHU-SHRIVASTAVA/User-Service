@@ -1,5 +1,6 @@
 package userService.security.services;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,7 @@ import userService.security.models.CustomUserDetails;
 
 import java.util.Optional;
 @Service
+@JsonDeserialize
 public class CustomUserDetailService implements UserDetailsService {
     private UserRepository userRepository;
 

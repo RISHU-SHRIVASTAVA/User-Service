@@ -1,5 +1,9 @@
 package userService.security.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import userService.models.Role;
@@ -9,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@JsonDeserialize
+@NoArgsConstructor
+@Getter
+@Setter
 //This CustomUserDetails class will act like a User Class for Spring Security
 public class CustomUserDetails implements UserDetails {
 
@@ -18,7 +26,12 @@ public class CustomUserDetails implements UserDetails {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
-    private List<CustomGrantAuthority> grantAuthorities;
+    private List<CustomGrantAuthority> authorities;
+    private Long userId;
+
+//    public CustomUserDetails(){
+//
+//    }
 
     public CustomUserDetails(User user){
         this.username = user.getEmail();
@@ -27,18 +40,18 @@ public class CustomUserDetails implements UserDetails {
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;
         this.enabled = true;
+        this.userId=user.getId();
 
         //In the granted authorities we need to add roles;
-        this.grantAuthorities = new ArrayList<>();
+        this.authorities = new ArrayList<>();
         for(Role role:user.getRoles()){
-            grantAuthorities.add(new CustomGrantAuthority(role));
+            authorities.add(new CustomGrantAuthority(role));
         }
-
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return grantAuthorities;
+        return authorities;
     }
 
     @Override
@@ -70,4 +83,8 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+//    public Long getUserId(){
+//        return userId;
+//    }
 }
